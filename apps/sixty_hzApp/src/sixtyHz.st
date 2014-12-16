@@ -220,7 +220,8 @@ ss sixtyHz_calc {
                    }
                  }
 	         if (j >2047) {
-                      sub_fifo[j-2047] = fifo_all[i_chan][j];
+                      sub_fifo[j-2048] = fifo_all[i_chan][j];
+/*		printf( "FIFO [%d][%d] is %f\n", i_chan, j, fifo_all[i_chan][j]); */
                  }
                  copy_fifo[j] = fifo_all[i_chan][j];                 
                }
