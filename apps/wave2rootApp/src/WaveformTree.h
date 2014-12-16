@@ -48,9 +48,9 @@ WaveformTree::WaveformTree(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/usr/clas12/hps/DATA/waveforms/w2r_20141215_185715.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/usr/clas12/hps/DATA/waveforms/w2r_20141215_205048.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/usr/clas12/hps/DATA/waveforms/w2r_20141215_185715.root");
+         f = new TFile("/usr/clas12/hps/DATA/waveforms/w2r_20141215_205048.root");
       }
       f->GetObject("sixtyHz_raw_14",tree);
 
