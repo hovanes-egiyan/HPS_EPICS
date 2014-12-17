@@ -134,7 +134,7 @@ ss sixtyHz_calc {
       } state stop
    }
    state stop{
-	when(delay(time_2_fill_fifo))  {
+	when(delay(time_2_fill_fifo)) {
 	  stop = 1;
           pvPut(stop);
         } state pause
@@ -219,8 +219,8 @@ ss sixtyHz_calc {
                       max_val = fifo_all[i_chan][j];
                    }
                  }
-	         if (j >= HALF_FIFO) {
-                      sub_fifo[j-HALF_FIFO] = fifo_all[i_chan][j];
+	         if (j < HALF_FIFO) {
+                      sub_fifo[j] = fifo_all[i_chan][j];
 /*		printf( "FIFO [%d][%d] is %f\n", i_chan, j, fifo_all[i_chan][j]); */
                  }
                  copy_fifo[j] = fifo_all[i_chan][j];                 
@@ -295,7 +295,7 @@ ss sixtyHz_calc {
                   pvPut(total_rate);
 
                   average = sum/NFIFO;
-                  if (average > 0) {
+                  if (fabs(average) > 0) {
                     peak_to_peak = 100.*(max_val - min_val)/(2.*average);
 /*		    printf("------ debug NFIFO = %d sum = %f average = %f sumsum = %f ", NFIFO, sum, average, sumsum);
 		    printf("sumsum/NFIFO = %f average^2 = %f ", sumsum/NFIFO, average*average); */
@@ -360,6 +360,8 @@ ss sixtyHz_calc {
 */
             }
             if (dwel < 0.001) {
+              pvGet(dwel);
+              time_2_fill_fifo = dwel*(NFIFO+10);
               erase_start = 1;
               pvPut(erase_start);
             }
