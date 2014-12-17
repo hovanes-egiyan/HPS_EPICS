@@ -35,7 +35,7 @@ assign fifo_all to { "sixtyHz_0",  "sixtyHz_1",  "sixtyHz_2",  "sixtyHz_3",
                     "sixtyHz_24", "sixtyHz_25", "sixtyHz_26", "sixtyHz_27",
                     "sixtyHz_28", "sixtyHz_29", "sixtyHz_30", "sixtyHz_31"}; 
 
-short sub_fifo[2048];
+short sub_fifo[HALF_FIFO];
 assign sub_fifo to "";
 
 float copy_fifo[NFIFO];
@@ -159,15 +159,15 @@ ss sixtyHz_calc {
         pvGet(sixtyHz_debug); 
 /*        printf("sixtyHz debug value %f\n", sixtyHz_debug); */
 	if (sixtyHz_debug) {
-             for (j=0; j< 4096; j++) {
-      	       ang = j*(60.*2.*3.14159/4096.);
+             for (j=0; j< NFIFO; j++) {
+      	       ang = j*(60.*2.*3.14159/NFIFO);
                test_data = 50. + 5.*cos(ang + 3.14159/8);
-	       ang = j*(120.*2.*3.14159/4096.);
+	       ang = j*(120.*2.*3.14159/NFIFO);
                test_data += 0.5*cos(ang + 7*3.14159/12.);
-	       ang = j*(180.*2.*3.14159/4096.);
+	       ang = j*(180.*2.*3.14159/NFIFO);
                test_data += 0.3*cos(ang + 5*3.14159/12.);
                      
-      	       ang = j*(60.*2.*3.14159/4096.);
+      	       ang = j*(60.*2.*3.14159/NFIFO);
                sync_data = 6. + 5.*cos(ang + 3.14159/17);
 
                for (i_chan = 0; i_chan < NCHAN; i_chan++) {
@@ -219,8 +219,8 @@ ss sixtyHz_calc {
                       max_val = fifo_all[i_chan][j];
                    }
                  }
-	         if (j >2047) {
-                      sub_fifo[j-2048] = fifo_all[i_chan][j];
+	         if (j >= HALF_FIFO) {
+                      sub_fifo[j-HALF_FIFO] = fifo_all[i_chan][j];
 /*		printf( "FIFO [%d][%d] is %f\n", i_chan, j, fifo_all[i_chan][j]); */
                  }
                  copy_fifo[j] = fifo_all[i_chan][j];                 
